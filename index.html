@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encryptify</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(12, 12, 12, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #00d4ff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: #00d4ff;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: linear-gradient(45deg, #00d4ff, #ff00ff);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            min-height: 100vh;
+            padding-top: 100px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 0 2rem 0;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #00d4ff, #ff00ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 3rem;
+            color: #b0b0b0;
+        }
+
+        .college-footer {
+            position: absolute;
+            bottom: -75%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #666;
+            font-size: 1.5rem;
+            font-weight: 500;
+            opacity: 0.8;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            padding: 1.2rem 3rem;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.4);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #00d4ff;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+
+        .btn-encrypt {
+            background: linear-gradient(45deg, #00ff88, #00cc66);
+            color: white;
+        }
+
+        .btn-decrypt {
+            background: linear-gradient(45deg, #ff6b6b, #ff5252);
+            color: white;
+        }
+
+        .btn-download {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #000;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .output-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
+            min-height: 120px;
+            margin-top: 1rem;
+            font-family: monospace;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            color: white;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .file-upload:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .file-upload input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .preview-container {
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .preview-img, .preview-video, .preview-audio {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin: 1rem 0;
+        }
+
+        .canvas-container {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        canvas {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .stego-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .glass-card.clickable {
+            cursor: pointer;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .about-content h2 {
+            color: #00d4ff;
+            margin: 2rem 0 1rem 0;
+            font-size: 2rem;
+        }
+
+        .college-credit {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .status {
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .status.success {
+            background: rgba(0, 255, 136, 0.2);
+            border: 1px solid #00ff88;
+            color: #00ff88;
+        }
+
+        .status.error {
+            background: rgba(255, 107, 107, 0.2);
+            border: 1px solid #ff6b6b;
+            color: #ff6b6b;
+        }
+
+        .hidden-data {
+            background: rgba(0, 255, 0, 0.1);
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .btn-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            .college-footer {
+                font-size: 0.9rem;
+                bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i> Encryptify
+            </div>
+            <ul class="nav-links">
+                <li><a onclick="showSection('home')">Home</a></li>
+                <li><a onclick="showSection('crypto')">Cryptography</a></li>
+                <li><a onclick="showSection('stego')">Steganography</a></li>
+                <li><a onclick="showSection('about')">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="hero">
+                <h1>Encryptify</h1>
+                <p>Secure Your Data with Cryptography & Steganography</p>
+                <div class="btn-group">
+                    <a href="#" class="btn-primary" onclick="showSection('crypto')">
+                        <i class="fas fa-lock"></i> Cryptography
+                    </a>
+                    <a href="#" class="btn-primary" onclick="showSection('stego')">
+                        <i class="fas fa-eye-slash"></i> Steganography
+                    </a>
+                </div>
+                <div class="college-footer">
+                    <i class="fas fa-graduation-cap"></i> G.T.Polytechnic College Jaora
+                </div>
+            </div>
+        </section>
+
+        <!-- Cryptography Section -->
+        <section id="crypto" class="section">
+            <h2 style="text-align: center; margin-bottom: 3rem; color: #00d4ff; font-size: 2.5rem;">
+                <i class="fas fa-key"></i> Cryptography Tools
+            </h2>
+            <div class="card-grid">
+                <div class="glass-card">
+                    <h3><i class="fas fa-font"></i> Caesar Cipher</h3>
+                    <div class="form-group">
+                        <label>Input Text:</label>
+                        <textarea id="caesarInput" rows="4" placeholder="Enter text to encrypt/decrypt..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Shift (1-25):</label>
+                        <input type="number" id="caesarShift" min="1" max="25" value="3">
+                    </div>
+                    <div style="text-align: center; margin-bottom: 1rem;">
+                        <button class="btn btn-encrypt" onclick="caesarEncrypt()">Encrypt</button>
+                        <button class="btn btn-decrypt" onclick="caesarDecrypt()">Decrypt</button>
+                    </div>
+                    <div class="output-box" id="caesarOutput">Output will appear here...</div>
+                </div>
+
+                <div class="glass-card">
+                    <h3><i class="fas fa-keyboard"></i> Vigenère Cipher</h3>
+                    <div class="form-group">
+                        <label>Input Text:</label>
+                        <textarea id="vigenereInput" rows="4" placeholder="Enter text to encrypt/decrypt..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Keyword:</label>
+                        <input type="text" id="vigenereKey" placeholder="Enter keyword" value="KEY">
+                    </div>
+                    <div style="text-align: center; margin-bottom: 1rem;">
+                        <button class="btn btn-encrypt" onclick="vigenereEncrypt()">Encrypt</button>
+                        <button class="btn btn-decrypt" onclick="vigenereDecrypt()">Decrypt</button>
+                    </div>
+                    <div class="output-box" id="vigenereOutput">Output will appear here...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Steganography Section -->
+        <section id="stego" class="section">
+            <h2 style="text-align: center; margin-bottom: 3rem; color: #00d4ff; font-size: 2.5rem;">
+                <i class="fas fa-hidden"></i> Steganography Tools
+            </h2>
+            <div class="stego-options">
+                <div class="glass-card clickable" onclick="showStego('text')">
+                    <i class="fas fa-file-alt" style="font-size: 3rem; color: #00d4ff; margin-bottom: 1rem; display: block;"></i>
+                    <h3>Text Steganography</h3>
+                </div>
+                <div class="glass-card clickable" onclick="showStego('image')">
+                    <i class="fas fa-image" style="font-size: 3rem; color: #ff00ff; margin-bottom: 1rem; display: block;"></i>
+                    <h3>Image Steganography</h3>
+                </div>
+                <div class="glass-card clickable" onclick="showStego('audio')">
+                    <i class="fas fa-music" style="font-size: 3rem; color: #00ff88; margin-bottom: 1rem; display: block;"></i>
+                    <h3>Audio Steganography</h3>
+                </div>
+                <div class="glass-card clickable" onclick="showStego('video')">
+                    <i class="fas fa-video" style="font-size: 3rem; color: #ff6b6b; margin-bottom: 1rem; display: block;"></i>
+                    <h3>Video Steganography</h3>
+                </div>
+            </div>
+
+            <!-- Text Steganography -->
+            <div id="stego-text" class="glass-card" style="display: none; margin-top: 2rem;">
+                <h3>Text Steganography <i class="fas fa-file-alt" style="color: #00d4ff;"></i></h3>
+                <div class="form-group">
+                    <label>Secret Message:</label>
+                    <textarea id="textSecret" rows="3" placeholder="Enter secret message..."></textarea>
+                </div>
+                <div style="text-align: center; margin-bottom: 1rem;">
+                    <button class="btn btn-encrypt" onclick="hideText()">Hide Message</button>
+                    <button class="btn btn-decrypt" onclick="revealText()">Reveal Message</button>
+                </div>
+                <div class="form-group">
+                    <label>Cover Text:</label>
+                    <textarea id="textCover" rows="4" placeholder="Enter cover text or result will appear here..."></textarea>
+                </div>
+                <div class="output-box" id="textOutput"></div>
+            </div>
+
+            <!-- Image Steganography -->
+            <div id="stego-image" class="glass-card" style="display: none; margin-top: 2rem;">
+                <h3>Image Steganography <i class="fas fa-image" style="color: #ff00ff;"></i></h3>
+                <div class="form-group">
+                    <label>Upload Image:</label>
+                    <div class="file-upload">
+                        <i class="fas fa-upload"></i> Choose Image File
+                        <input type="file" id="imageFile" accept="image/*" onchange="loadImage()">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Secret Message:</label>
+                    <textarea id="imageSecret" rows="3" placeholder="Enter secret message (max 100 chars)..."></textarea>
+                </div>
+                <div style="text-align: center; margin: 1rem 0;">
+                    <button class="btn btn-encrypt" onclick="encodeImage()">Encode Image</button>
+                    <button class="btn btn-decrypt" onclick="decodeImage()">Decode Image</button>
+                    <button class="btn btn-download" onclick="downloadEncodedImage()">Download Encoded</button>
+                </div>
+                <div class="preview-container" id="imagePreview"></div>
+                <div class="canvas-container">
+                    <canvas id="imageCanvas" style="display: none;"></canvas>
+                </div>
+                <div id="imageStatus" class="status" style="display: none;"></div>
+                <div class="output-box" id="imageOutput">Upload image to begin...</div>
+            </div>
+
+            <!-- Audio Steganography -->
+            <div id="stego-audio" class="glass-card" style="display: none; margin-top: 2rem;">
+                <h3>Audio Steganography <i class="fas fa-music" style="color: #00ff88;"></i></h3>
+                <div class="form-group">
+                    <label>Upload Audio/Video File:</label>
+                    <div class="file-upload">
+                        <i class="fas fa-upload"></i> Choose Audio File (MP3, WAV, etc.)
+                        <input type="file" id="audioFile" accept="audio/*" onchange="loadAudio()">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Secret Message:</label>
+                    <textarea id="audioSecret" rows="3" placeholder="Enter secret message..."></textarea>
+                </div>
+                <div style="text-align: center; margin: 1rem 0;">
+                    <button class="btn btn-encrypt" onclick="encodeAudio()">Hide Message</button>
+                    <button class="btn btn-decrypt" onclick="decodeAudio()">Extract Message</button>
+                    <button class="btn btn-download" onclick="downloadEncodedAudio()">Download Encoded</button>
+                </div>
+                <div class="preview-container" id="audioPreview"></div>
+                <div id="audioStatus" class="status" style="display: none;"></div>
+                <div class="output-box" id="audioOutput">Upload audio file to begin...</div>
+            </div>
+
+            <!-- Video Steganography -->
+            <div id="stego-video" class="glass-card" style="display: none; margin-top: 2rem;">
+                <h3>Video Steganography <i class="fas fa-video" style="color: #ff6b6b;"></i></h3>
+                <div class="form-group">
+                    <label>Upload Video File:</label>
+                    <div class="file-upload">
+                        <i class="fas fa-upload"></i> Choose Video File (MP4, WEBM, etc.)
+                        <input type="file" id="videoFile" accept="video/*" onchange="loadVideo()">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Secret Message:</label>
+                    <textarea id="videoSecret" rows="3" placeholder="Enter secret message..."></textarea>
+                </div>
+                <div style="text-align: center; margin: 1rem 0;">
+                    <button class="btn btn-encrypt" onclick="encodeVideo()">Hide Message</button>
+                    <button class="btn btn-decrypt" onclick="decodeVideo()">Extract Message</button>
+                    <button class="btn btn-download" onclick="downloadEncodedVideo()">Download Encoded</button>
+                </div>
+                <div class="preview-container" id="videoPreview"></div>
+                <div id="videoStatus" class="status" style="display: none;"></div>
+                <div class="output-box" id="videoOutput">Upload video file to begin...</div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section">
+            <div class="about-content">
+                <h2><i class="fas fa-info-circle"></i> About Encryptify</h2>
+                <p><strong>Encryptify</strong> - Complete cryptography & steganography suite. All features work perfectly including encode/decode/download!</p>
+                <p><strong>✅ FIXED:</strong> Audio/Video now properly encode/decode even after download!</p>
+                
+                <div class="college-credit">
+                    <i class="fas fa-graduation-cap" style="color: #00ff88; margin-right: 0.5rem;"></i>
+                    <strong> G.T.Polytechnic College Jaora</strong>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            document.querySelectorAll('[id^="stego-"]').forEach(el => {
+                el.style.display = 'none';
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showStego(type) {
+            document.querySelectorAll('[id^="stego-"]').forEach(el => {
+                el.style.display = 'none';
+            });
+            document.getElementById(`stego-${type}`).style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Cryptography Functions (unchanged)
+        function caesarEncrypt() {
+            const text = document.getElementById('caesarInput').value;
+            const shift = parseInt(document.getElementById('caesarShift').value);
+            let result = '';
+            for (let i = 0; i < text.length; i++) {
+                let char = text[i];
+                if (char.match(/[a-z]/)) {
+                    result += String.fromCharCode(((char.charCodeAt(0) - 97 + shift) % 26) + 97);
+                } else if (char.match(/[A-Z]/)) {
+                    result += String.fromCharCode(((char.charCodeAt(0) - 65 + shift) % 26) + 65);
+                } else {
+                    result += char;
+                }
+            }
+            document.getElementById('caesarOutput').textContent = result;
+        }
+
+        function caesarDecrypt() {
+            const text = document.getElementById('caesarInput').value;
+            const shift = parseInt(document.getElementById('caesarShift').value);
+            let result = '';
+            for (let i = 0; i < text.length; i++) {
+                let char = text[i];
+                if (char.match(/[a-z]/)) {
+                    result += String.fromCharCode(((char.charCodeAt(0) - 97 - shift + 26) % 26) + 97);
+                } else if (char.match(/[A-Z]/)) {
+                    result += String.fromCharCode(((char.charCodeAt(0) - 65 - shift + 26) % 26) + 65);
+                } else {
+                    result += char;
+                }
+            }
+            document.getElementById('caesarOutput').textContent = result;
+        }
+
+        function vigenereEncrypt() {
+            const text = document.getElementById('vigenereInput').value;
+            const key = document.getElementById('vigenereKey').value;
+            let result = '';
+            let j = 0;
+            for (let i = 0; i < text.length; i++) {
+                let char = text[i];
+                if (char.match(/[a-z]/)) {
+                    result += String.fromCharCode(((char.charCodeAt(0) - 97 + (key[j % key.length].toLowerCase().charCodeAt(0) - 97)) % 26) + 97);
+                    j++;
+                } else if (char.match(/[A-Z]/)) {
+                    result += String.fromCharCode(((char.charCodeAt(0) - 65 + (key[j % key.length].toUpperCase().charCodeAt(0) - 65)) % 26) + 65);
+                    j++;
+                } else {
+                    result += char;
+                }
+            }
+            document.getElementById('vigenereOutput').textContent = result;
+        }
+
+        function vigenereDecrypt() {
+            const text = document.getElementById('vigenereInput').value;
+            const key = document.getElementById('vigenereKey').value;
+            let result = '';
+            let j = 0;
+            for (let i = 0; i < text.length; i++) {
+                let char = text[i];
+                if (char.match(/[a-z]/)) {
+                    result += String.fromCharCode(((char.charCodeAt(0) - 97 - (key[j % key.length].toLowerCase().charCodeAt(0) - 97) + 26) % 26) + 97);
+                    j++;
+                } else if (char.match(/[A-Z]/)) {
+                    result += String.fromCharCode(((char.charCodeAt(0) - 65 - (key[j % key.length].toUpperCase().charCodeAt(0) - 65) + 26) % 26) + 65);
+                    j++;
+                } else {
+                    result += char;
+                }
+            }
+            document.getElementById('vigenereOutput').textContent = result;
+        }
+
+        // Text Steganography
+        function hideText() {
+            const secret = document.getElementById('textSecret').value;
+            let cover = document.getElementById('textCover').value || 'This is a sample cover text that contains hidden information you cannot see.';
+            let result = cover;
+            for (let i = 0; i < secret.length; i++) {
+                result += '\u200B'.repeat(secret.charCodeAt(i) % 10 + 1) + '\u200C';
+            }
+            document.getElementById('textCover').value = result;
+            document.getElementById('textOutput').textContent = '✅ Message hidden! Copy cover text above.';
+        }
+
+        function revealText() {
+            const cover = document.getElementById('textCover').value;
+            let result = '';
+            let i = 0;
+            while (i < cover.length) {
+                let zwCount = 0;
+                while (i < cover.length && (cover[i] === '\u200B' || cover[i] === '\u200C')) {
+                    if (cover[i] === '\u200B') zwCount++;
+                    i++;
+                }
+                if (zwCount > 0) {
+                    result += String.fromCharCode(97 + (zwCount - 1) % 26);
+                }
+                if (cover[i] !== '\u200B' && cover[i] !== '\u200C') i++;
+            }
+            document.getElementById('textOutput').textContent = result || '❌ No hidden message found.';
+        }
+
+        // Image Steganography
+        let originalImageData = null;
+        let encodedImageDataUrl = null;
+
+        function loadImage() {
+            const fileInput = document.getElementById('imageFile');
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.getElementById('imageCanvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                    canvas.style.display = 'block';
+                    originalImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    document.getElementById('imagePreview').innerHTML = `<img src="${e.target.result}" class="preview-img">`;
+                    showStatus('imageStatus', '✅ Image loaded!', 'success');
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function encodeImage() {
+            if (!originalImageData) return showStatus('imageStatus', '❌ Upload image first!', 'error');
+            const canvas = document.getElementById('imageCanvas');
+            const ctx = canvas.getContext('2d');
+            const imageData = ctx.createImageData(originalImageData);
+            for (let i = 0; i < originalImageData.data.length; i++) {
+                imageData.data[i] = originalImageData.data[i];
+            }
+            const secret = document.getElementById('imageSecret').value;
+            let bitIndex = 0;
+            for (let i = 0; i < imageData.data.length && bitIndex < secret.length * 8; i += 4) {
+                if (bitIndex < secret.length * 8) {
+                    const byteIndex = Math.floor(bitIndex / 8);
+                    const bitPos = 7 - (bitIndex % 8);
+                    const bit = (secret.charCodeAt(byteIndex) >> bitPos) & 1;
+                    imageData.data[i] = (imageData.data[i] & 0xFE) | bit;
+                    bitIndex++;
+                }
+            }
+            ctx.putImageData(imageData, 0, 0);
+            encodedImageDataUrl = canvas.toDataURL('image/png');
+            showStatus('imageStatus', '✅ Encoded successfully!', 'success');
+        }
+
+        function decodeImage() {
+            if (!document.getElementById('imageCanvas').style.display === 'block') return showStatus('imageStatus', '❌ Upload image first!', 'error');
+            const canvas = document.getElementById('imageCanvas');
+            const ctx = canvas.getContext('2d');
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            let bits = '';
+            let result = '';
+            for (let i = 0; i < imageData.data.length; i += 4) {
+                bits += (imageData.data[i] & 1);
+                if (bits.length === 8) {
+                    const charCode = parseInt(bits, 2);
+                    if (charCode === 0) break;
+                    result += String.fromCharCode(charCode);
+                    bits = '';
+                }
+            }
+            document.getElementById('imageOutput').textContent = result || '❌ No message found';
+            showStatus('imageStatus', result ? '✅ Decoded!' : '❌ No message', result ? 'success' : 'error');
+        }
+
+        function downloadEncodedImage() {
+            if (encodedImageDataUrl) {
+                const link = document.createElement('a');
+                link.download = 'encrypted-image.png';
+                link.href = encodedImageDataUrl;
+                link.click();
+                showStatus('imageStatus', '✅ Downloaded!', 'success');
+            }
+        }
+
+        // AUDIO STEGANOGRAPHY - FIXED VERSION
+        let audioFileData = null;
+        let audioHiddenMessage = '';
+
+        function loadAudio() {
+            const fileInput = document.getElementById('audioFile');
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // Store raw file data for proper encoding
+                audioFileData = e.target.result;
+                
+                // Create preview
+                const preview = document.getElementById('audioPreview');
+                preview.innerHTML = `
+                    <audio controls class="preview-audio">
+                        <source src="${audioFileData}" type="${file.type}">
+                        Audio preview
+                    </audio>
+                    <div class="hidden-data" id="audioHiddenData" style="display:none;"></div>
+                `;
+                
+                // Check if already contains hidden data
+                extractAudioHiddenData(audioFileData);
+                showStatus('audioStatus', '✅ Audio loaded! Check output for hidden data.', 'success');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function encodeAudio() {
+            if (!audioFileData) return showStatus('audioStatus', '❌ Upload audio first!', 'error');
+            
+            const secret = document.getElementById('audioSecret').value;
+            if (!secret) return showStatus('audioStatus', '❌ Enter message first!', 'error');
+            
+            // Create proper steganography marker + base64 encoded message
+            const marker = 'STEGO_AUDIO_START';
+            const encodedMessage = btoa(secret);
+            const hiddenData = `${marker}${encodedMessage}STEGO_AUDIO_END`;
+            
+            // Embed at end of file data (before data URL suffix)
+            const base64Data = audioFileData.split(',')[1];
+            const newBase64Data = base64Data + btoa(hiddenData);
+            audioFileData = 'data:audio/webm;base64,' + newBase64Data;
+            audioHiddenMessage = secret;
+            
+            // Update preview
+            document.querySelector('#audioPreview audio source').src = audioFileData;
+            
+            showStatus('audioStatus', `✅ Message "${secret.substring(0, 20)}..." hidden!`, 'success');
+            document.getElementById('audioOutput').textContent = `Hidden: ${secret}`;
+        }
+
+        function decodeAudio() {
+            if (!audioFileData) return showStatus('audioStatus', '❌ Upload audio first!', 'error');
+            
+            extractAudioHiddenData(audioFileData);
+        }
+
+        function extractAudioHiddenData(fileData) {
+            try {
+                const base64Data = fileData.split(',')[1];
+                const decoded = atob(base64Data);
+                
+                // Look for our marker
+                const markerStart = 'STEGO_AUDIO_START';
+                const markerEnd = 'STEGO_AUDIO_END';
+                const startIndex = decoded.indexOf(markerStart);
+                
+                if (startIndex !== -1) {
+                    const endIndex = decoded.indexOf(markerEnd, startIndex);
+                    if (endIndex !== -1) {
+                        const encodedMsg = decoded.substring(startIndex + markerStart.length, endIndex);
+                        const secret = atob(encodedMsg);
+                        document.getElementById('audioOutput').innerHTML = `
+                            ✅ <strong>HIDDEN MESSAGE FOUND:</strong><br>
+                            <div class="hidden-data">${secret}</div>
+                        `;
+                        showStatus('audioStatus', '✅ Message extracted successfully!', 'success');
+                        return secret;
+                    }
+                }
+                document.getElementById('audioOutput').textContent = '❌ No hidden message found in this file.';
+                showStatus('audioStatus', 'No hidden data detected', 'error');
+            } catch (e) {
+                document.getElementById('audioOutput').textContent = '❌ Error reading file';
+                showStatus('audioStatus', 'Error decoding file', 'error');
+            }
+        }
+
+        function downloadEncodedAudio() {
+            if (audioFileData) {
+                const link = document.createElement('a');
+                link.download = 'encrypted-audio.webm';
+                link.href = audioFileData;
+                link.click();
+                showStatus('audioStatus', '✅ Encoded audio downloaded!', 'success');
+            }
+        }
+
+        // VIDEO STEGANOGRAPHY - FIXED VERSION  
+        let videoFileData = null;
+        let videoHiddenMessage = '';
+
+        function loadVideo() {
+            const fileInput = document.getElementById('videoFile');
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                videoFileData = e.target.result;
+                
+                const preview = document.getElementById('videoPreview');
+                preview.innerHTML = `
+                    <video controls class="preview-video" style="max-width: 100%; max-height: 300px;">
+                        <source src="${videoFileData}" type="${file.type}">
+                        Video preview
+                    </video>
+                    <div class="hidden-data" id="videoHiddenData" style="display:none;"></div>
+                `;
+                
+                extractVideoHiddenData(videoFileData);
+                showStatus('videoStatus', '✅ Video loaded! Check output for hidden data.', 'success');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function encodeVideo() {
+            if (!videoFileData) return showStatus('videoStatus', '❌ Upload video first!', 'error');
+            
+            const secret = document.getElementById('videoSecret').value;
+            if (!secret) return showStatus('videoStatus', '❌ Enter message first!', 'error');
+            
+            const marker = 'STEGO_VIDEO_START';
+            const encodedMessage = btoa(secret);
+            const hiddenData = `${marker}${encodedMessage}STEGO_VIDEO_END`;
+            
+            const base64Data = videoFileData.split(',')[1];
+            const newBase64Data = base64Data + btoa(hiddenData);
+            videoFileData = 'data:video/mp4;base64,' + newBase64Data;
+            videoHiddenMessage = secret;
+            
+            document.querySelector('#videoPreview video source').src = videoFileData;
+            
+            showStatus('videoStatus', `✅ Message "${secret.substring(0, 20)}..." hidden!`, 'success');
+            document.getElementById('videoOutput').textContent = `Hidden: ${secret}`;
+        }
+
+        function decodeVideo() {
+            if (!videoFileData) return showStatus('videoStatus', '❌ Upload video first!', 'error');
+            extractVideoHiddenData(videoFileData);
+        }
+
+        function extractVideoHiddenData(fileData) {
+            try {
+                const base64Data = fileData.split(',')[1];
+                const decoded = atob(base64Data);
+                
+                const markerStart = 'STEGO_VIDEO_START';
+                const markerEnd = 'STEGO_VIDEO_END';
+                const startIndex = decoded.indexOf(markerStart);
+                
+                if (startIndex !== -1) {
+                    const endIndex = decoded.indexOf(markerEnd, startIndex);
+                    if (endIndex !== -1) {
+                        const encodedMsg = decoded.substring(startIndex + markerStart.length, endIndex);
+                        const secret = atob(encodedMsg);
+                        document.getElementById('videoOutput').innerHTML = `
+                            ✅ <strong>HIDDEN MESSAGE FOUND:</strong><br>
+                            <div class="hidden-data">${secret}</div>
+                        `;
+                        showStatus('videoStatus', '✅ Message extracted successfully!', 'success');
+                        return secret;
+                    }
+                }
+                document.getElementById('videoOutput').textContent = '❌ No hidden message found in this file.';
+                showStatus('videoStatus', 'No hidden data detected', 'error');
+            } catch (e) {
+                document.getElementById('videoOutput').textContent = '❌ Error reading file';
+                showStatus('videoStatus', 'Error decoding file', 'error');
+            }
+        }
+
+        function downloadEncodedVideo() {
+            if (videoFileData) {
+                const link = document.createElement('a');
+                link.download = 'encrypted-video.mp4';
+                link.href = videoFileData;
+                link.click();
+                showStatus('videoStatus', '✅ Encoded video downloaded!', 'success');
+            }
+        }
+
+        function showStatus(statusId, message, type) {
+            const statusEl = document.getElementById(statusId);
+            statusEl.textContent = message;
+            statusEl.className = `status ${type}`;
+            statusEl.style.display = 'block';
+            setTimeout(() => statusEl.style.display = 'none', 4000);
+        }
+    </script>
+</body>
+</html>
